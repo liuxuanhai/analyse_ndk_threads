@@ -6,7 +6,7 @@ include $(CLEAR_VARS)
 #指定当前编译模块的名称
 LOCAL_MODULE := NDK_THREAD
 #编译模块需要的源文件
-LOCAL_SRC_FILES := jnidynamic.cpp jnilog.cpp threads.cpp
+LOCAL_SRC_FILES := threaddynamic.cpp
 
 #定义日志标签，该标签在mylog.h中被使用
 MY_LOG_TAG := \"tag\"

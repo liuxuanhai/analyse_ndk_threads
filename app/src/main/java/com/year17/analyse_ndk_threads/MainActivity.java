@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //清空展示的内容
+                logView.setText("");
                 int threads = getNumber(threadEdit,0);
                 int iterations = getNumber(iterationEdit,0);
                 if(threads>0&&iterations>0){
@@ -86,8 +88,12 @@ public class MainActivity extends AppCompatActivity {
      * @param iterations
      */
     private void startThread(int threads,int iterations){
-        javaThreads(threads,iterations);
-    }
+        //javaThreads(threads,iterations);
+        //使用POSIX线程
+//        posixThreads(threads,iterations);
+        //使用POSIX线程挂起版
+        holdPosixThreads(threads,iterations);
+  }
 
     /**
      * 使用基于Java的线程
@@ -123,7 +129,22 @@ public class MainActivity extends AppCompatActivity {
      */
     private native void nativeWorker(int id,int iterations);
 
-    public static native String logFromJni();
+    /**
+     * 使用POSIX线程
+     * @param threads
+     * @param iterations
+     */
+    private native void posixThreads(int threads,int iterations);
+
+    /**
+     * 使用POSIX线程
+     * 它将挂起调用线程的执行，直到目标线程终止.
+     * 当单击按钮后，UI将挂起几秒，这是由于pthread_join函数将UI的主线程挂起，
+     * 直到创建的线程终止，UI线程才显示返回结果。
+     * @param threads
+     * @param iterations
+     */
+    private native void holdPosixThreads(int threads,int iterations);
 
     static {
         System.loadLibrary("NDK_THREAD");
